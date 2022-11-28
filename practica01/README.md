@@ -20,41 +20,41 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
     Para empezar realizamos una actualización de paquetes. 
     
-    `sudo apt-get update`
+        sudo apt-get update
 
     ![Actualizar paquetes](/practica01/images/update.png)
 
     Ahora, instalamos unos paquetes para permitir a *apt* usar paquetes a través de HTTPS.
 
-    `sudo apt install apt-transport-https ca-certificates curl software-properties-common`
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common
 
     ![Instalación de paquetes](/practica01/images/libs.png)
 
     Añadimos la clave GPG del repositorio oficial de Docker.
 
-    `curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -`
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
     ![Clave GPG repositorio Docker](/practica01/images/GPG.png)
 
     Agregamos el repositorio a las fuentes de APT.
 
-    `sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"`
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 
     ![Añadir el repositorio a APT](/practica01/images/APT.png)
 
     Actualizamos con los paquetes de Docker recién agregados.
 
-    `sudo apt update`
+        sudo apt update
 
     ![Actualizar paquetes con repositorios de Docker](/practica01/images/update2.png)
 
     Con el siguiente comando nos aseguramos que se realizará la instalación desde el repositorio de Docker.
 
-    `apt-cache policy docker-ce`
+        apt-cache policy docker-ce
 
     Ahora procedemos a instalar Docker.
 
-    `sudo apt install docker-ce`
+        sudo apt install docker-ce
 
     ![Instalar Docker](/practica01/images/install.png)
 
@@ -62,37 +62,37 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
     Por medio del siguiente observamos la configuración de red.
 
-    `ifconfig`
+        ifconfig
 
     ![Configuración de red](/practica01/images/ifconfig.png)
 
     En caso de querer conocer las direcciones IP internas podemos usar el siguiente comando.
 
-    `ip a`
+        ip a
 
     ![Comando IP a](/practica01/images/ipa.png)
 
     Para concer la dirección de la Gateway por defecto usamos el comando:
 
-    `ip r`
+        ip r
 
     ![Comando IP r](/practica01/images/ipr.png)
 
     Para conocer los puertos ocupados dentro del sistema podemos usar el comando *ss*. Con este comando se pueden ver las direcciones y puertos, locales y de destino de cada servicio.
 
-    `ss`
+        ss
 
     ![Comando SS](/practica01/images/ss.png)
 
     Con el comando *netstat -a* podemos obtener información similar.
 
-    `netstat -a`
+        netstat -a
 
     ![Netstat](/practica01/images/netstat.png)
 
     Para información detallada hacemos uso del comando *lsof*.
 
-    `lsof`
+        lsof
 
     ![LSOF](/practica01/images/lsof.png)
 
