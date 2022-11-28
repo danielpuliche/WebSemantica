@@ -8,15 +8,15 @@ Primera implementación de un Servidor Web, haciendo uso del protocolo de *__Tra
 
 A continuación se presentan los pasos realizados durante el desarrollo de la práctica:
 
-1. Instalar NodeJS y NestJS
+1. Instalar `NodeJS` y `NestJS`
 
-    Actualizamos los paquetes de aptitude e instalamos nodejs.
+    Actualizamos los paquetes de aptitude e instalamos `NodeJS`.
 
         sudo apt-get update && sudo apt-get install nodejs -y
 
     ![Actualizar paquetes e instalar nodejs](/practica02/images/installNode.png)
 
-    Nos aseguramos ahora de actualizar nodejs a su última versión.
+    Nos aseguramos ahora de actualizar `NodeJS` a su última versión.
 
         sudo npm cache clean -f
         sudo npm install -g n
@@ -24,14 +24,14 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
     ![Actualizar NodeJS](/practica02/images/updateNode.png)
 
-    Validamos las versiones instaladas de NodeJS y el gestor de paquetes npm.
+    Validamos las versiones instaladas de `NodeJS` y el gestor de paquetes `npm`.
 
         node -v
         npm -v
 
     ![Validar versiones](/practica02/images/versions.png)
 
-    Creamos un espacio para los recursos globales en NodeJS.
+    Creamos un espacio para los recursos globales en `NodeJS`.
 
         cd
         mkdir ~/.npm-global
@@ -41,9 +41,34 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
     ![Instalación de NestJs](/practica02/images/globalResourcesNode.png)
 
-    Ahora, instalamos NestJS.
+    Ahora, instalamos `NestJS`.
 
         npm i -g @nestjs/cli
         source ~/.zshrc
 
     ![Instalación de NestJs](/practica02/images/installNest.png)
+
+2. Ejecutar el ejemplo Hello World
+
+    Creamos la carpeta donde se alojará el proyecto.
+
+        mkdir Servidores
+        cd ./Servidores
+
+    ![Carpeta del proyecto](/practica02/images/projectFolder.png)
+
+    Creamos el proyecto con NestJS. Seleccionamos el gestor de paquetes `npm` para la instalación.
+
+        nest new practica_02
+
+    ![Creación de proyecto con Nest](/practica02/images/nestProject.png)
+
+    Ejecutamos el ejemplo Hello World.
+
+        cd practica_02
+        npm run star:dev
+
+    ![Ejecutar Hello World 1](/practica02/images/startHelloWorld.png)
+    ![Ejemplo en ejecución](/practica02/images/runningHelloWorld.png)
+
+    
