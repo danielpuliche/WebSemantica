@@ -10,8 +10,8 @@ ___
 
 ## Contenidos
 
-* [**Práctica 1** - Configuración de entorno y red](./practica01/README.md)
-* [**Práctica 2** - Creando un servidor REST](./practica02/README.md)
+* [**Práctica 1** - Configuración de entorno y red](./practica01/)
+* [**Práctica 2** - Creando un servidor REST](./practica02/)
 * Práctica 3 -
 * Práctica 4 - 
 * Proyecto - 
