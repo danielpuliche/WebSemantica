@@ -86,3 +86,7 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
     De igual modo, podemos visualizar el funcionamiento con un gestor de solicitudes HTTP como Postman o la extensión Thunder Client en VsCode.
 
     ![Petición con Thunder Client](/practica02/images/getRequest.png)
+
+3. Publicando el código en GitHub
+
+    Si estás el leyendo esto ya está publicado :D
