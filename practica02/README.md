@@ -90,3 +90,35 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 3. Publicando el código en GitHub
 
     Si estás el leyendo esto ya está publicado :D
+
+4. Los verbos HTTP
+
+    Primeramente accedemos al archivo *app.controller.ts*. Dentro de este código podemos encontrar una función precedida por la anotación *'@Get'*, la cual actuará una vez el servidor reciba una solicitud *GET*.
+
+    ![Script controller inicial](/practica02/images/script1.png)
+
+    Podemos editar la función para que funcione como deseamos. En este caso, cambiaremos el mensaje de retorno.
+
+    ![Nuevo Hola mundo](/practica02/images/script2.png)
+
+    Si realizamos una petición 'GET' al servidor podemos ver los cambios. En este caso la realizaremos con el navegador para observar el cambio.
+
+    ![Petición al navegador](/practica02/images/browserRequest.png)
+
+    Ahora, realizamos la edición de ala función para que esta funcione con una variable externa a la función.
+
+    ![Peticion GET con variable externa](/practica02/images/script3.png)
+
+    Su respuesta sería.
+
+    ![Petición GET con variable externa](/practica02/images/browserRequest2.png)
+
+    Para añadir una petición *POST* hacemos uso de la anotación *'@Post'* para crear una función que responda a estas peticiones. En este caso, crearemos una función que reciba un *nombre* y genere un mensaje personalizado.
+
+    ![Petición POST](/practica02/images/script4.png)
+
+    Para realizar esta petición hacemos uso de Thunder Client. En este realizamos la petición a la dirección *http://localhost:3000/'name'*.
+
+    ![Petición POST con Thunder Client](/practica02/images/postRequest.png)
+
+    
