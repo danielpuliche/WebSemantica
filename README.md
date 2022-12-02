@@ -1,6 +1,7 @@
 # Web Semántica
 
 - Nombre: Daniel Fernando Puliche Cañas
+- Asignatura: Desarrollo de Software - Web Semántica IoT
 
 ## Descripción
 
@@ -18,4 +19,3 @@ ___
 * Práctica 4 - 
 * Proyecto - 
 
-___
