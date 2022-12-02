@@ -1,5 +1,7 @@
 # Web Semántica
 
+- Nombre: Daniel Fernando Puliche Cañas
+
 ## Descripción
 
 En este repositorio se encontrarán las evidencias del desarrollo de las prácticas del curso Web Semántica y el proyecto de clase.
