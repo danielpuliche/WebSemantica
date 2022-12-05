@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Patch} from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Patch, UseGuards} from '@nestjs/common';
 import { FilmService} from '../../domain/services/film.service';
 
 import { Film } from '../../domain/models/film.model';
+import { AuthGuard } from '@nestjs/passport';
 
 // Función para mostrar un mensaje en caso de errores
 const errReturn = (e: Error, message: string) =>{
@@ -24,6 +25,7 @@ constructor(private readonly filmService: FilmService) { }
         }
     }
 
+    @UseGuards(AuthGuard('local'))
     @Post("create")
     createFilm(@Body() film: Film){
         try{
