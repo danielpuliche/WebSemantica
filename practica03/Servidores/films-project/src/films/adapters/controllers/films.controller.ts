@@ -3,6 +3,7 @@ import { FilmService} from '../../domain/services/film.service';
 
 import { Film } from '../../domain/models/film.model';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 // Función para mostrar un mensaje en caso de errores
 const errReturn = (e: Error, message: string) =>{
@@ -25,7 +26,7 @@ constructor(private readonly filmService: FilmService) { }
         }
     }
 
-    @UseGuards(AuthGuard('local'))
+    @UseGuards(JwtAuthGuard)
     @Post("create")
     createFilm(@Body() film: Film){
         try{
@@ -35,6 +36,7 @@ constructor(private readonly filmService: FilmService) { }
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put("update/:id")
     updateFilm(@Body() film: Film, @Param('id') id: number){
         try{
@@ -44,6 +46,7 @@ constructor(private readonly filmService: FilmService) { }
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete("delete/:id")
     deleteFilm(@Param('id') id: number){
         try{
@@ -53,6 +56,7 @@ constructor(private readonly filmService: FilmService) { }
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch("update/:id/name")
     updateName(@Body() data, @Param('id') id: number){
         try{

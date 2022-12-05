@@ -312,3 +312,188 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
 	![Vulnerabilidad al crear película](/practica03/images/vulnerability.png)
 
+3. Autenticación con JWT
+
+	Instalamos el paquete JWT.
+
+		npm install --save @nestjs/jwt passport-jwt
+		npm install --save-dev @types/passport-jwt
+
+	![Instalación paquetes JWT](/practica03/images/jwtPackages.png)
+
+	Modificamos el archivo `auth.service.ts` añadiendo el método login y dependencias necesarias.
+
+	```typescript
+	import { Injectable } from '@nestjs/common';
+	import { UsersService } from '../users/users.service';
+	import { JwtService } from '@nestjs/jwt';
+
+	@Injectable()
+	export class AuthService {
+		constructor(
+				private usersService: UsersService,
+				private jwtService: JwtService
+		) {}
+
+		async validateUser(username: string, pass: string): Promise<any> {
+				const user = await this.usersService.findOne(username);
+				if (user && user.password === pass) {
+					const { password, ...result } = user;
+					return result;
+				}
+				return null;
+		}
+
+		async login(user: any) {
+				const payload = { username: user.username, sub: user.userId };
+				return {
+					access_token: this.jwtService.sign(payload),
+				};
+		}
+	}
+	```
+
+	Con el fin de poder permitir a los usuarios inciar sesión, es necesario crear un endpoint que lo permita, por lo que es necesario crear el controlador `auth.controller.ts`.
+
+	```typescript
+	import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+	import { AuthGuard } from '@nestjs/passport';
+	import { AuthService } from './auth.service';
+
+	@Controller('auth')
+	export class AuthController {
+		constructor(private authService: AuthService) {}
+
+		@UseGuards(AuthGuard('local'))
+		@Post('login')
+		async login(@Request() req) {
+				return this.authService.login(req.user);
+   }
+	}
+	```
+
+	Creamos el archivo `constants.ts` para registrar el secreto `JWT`.
+
+	```typescript
+	export const jwtSecret = 'secretKey';
+	```
+
+	Se adiciona una estrategía para permitir a `Passport` identificar donde encontrar el token de una petición y cual es el secreto que le permite validarlo. Creamos el archivo `jwt-auth.strategy.ts`
+
+	```typescript
+	import { ExtractJwt, Strategy } from 'passport-jwt';
+	import { PassportStrategy } from '@nestjs/passport';
+	import { Injectable } from '@nestjs/common';
+	import { jwtSecret } from './constants';
+
+	@Injectable()
+	export class JwtStrategy extends PassportStrategy(Strategy) {
+		constructor() {
+			super({
+				jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+				ignoreExpiration: false,
+				secretOrKey: jwtSecret,
+			});
+		}
+
+		async validate(payload: any) {
+			return { userId: payload.sub, username: payload.username };
+		}
+	}
+	```
+
+	Modificamos `aut.module.ts` para que funcione con el servicio de JWT.
+
+	```typescript
+	import { Module } from '@nestjs/common';
+	import { AuthService } from './auth.service';
+	import { LocalStrategy } from './local.strategy';
+	import { UsersModule } from '../users/users.module';
+	import { PassportModule } from '@nestjs/passport';
+	import { JwtModule } from '@nestjs/jwt';
+	import { AuthController } from './auth.controller';
+
+	@Module({
+		controllers: [AuthController],
+		imports: [
+			UsersModule,
+			PassportModule,
+			JwtModule.register({
+				secret: "este es el secreto para generar JWT",
+				signOptions: { expiresIn: '60m' },
+			}),
+		],
+		providers: [AuthService, LocalStrategy],
+		exports: [AuthService],
+		})
+	export class AuthModule {}
+	```
+
+	Creamos un guardia para interceptar un token JWT. Se crea el archivo `jwt-auth.guard.ts`.
+
+	```typescript
+	import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+	import { AuthGuard } from '@nestjs/passport';
+
+	@Injectable()
+	export class JwtAuthGuard extends AuthGuard('jwt') {}
+	```
+
+	Actualizamos `auth.module.ts`.
+
+	```typescript
+	import { Module } from '@nestjs/common';
+	import { AuthService } from './auth.service';
+	import { LocalStrategy } from './local.strategy';
+	import { UsersModule } from '../users/users.module';
+	import { PassportModule } from '@nestjs/passport';
+	import { JwtModule } from '@nestjs/jwt';
+	import { AuthController } from './auth.controller';
+	import { jwtSecret } from './constants';
+	import { JwtStrategy } from './jwt-auth.strategy';
+	import { JwtAuthGuard } from './jwt-auth.guard';
+
+	@Module({
+		controllers: [AuthController],
+		imports: [
+			UsersModule,
+			PassportModule,
+			JwtModule.register({
+				secret: jwtSecret,
+				signOptions: { expiresIn: '60m' },
+			}),
+		],
+		providers: [AuthService, LocalStrategy, JwtStrategy, JwtAuthGuard],
+		exports: [AuthService],
+	})
+
+	export class AuthModule { }
+	```
+
+	Si realizamos una solicitud `POST` a la dirección *http://localhost:3000/auth/login* con un `JSON` con el `username` y `password` se obtendrá un token de autenticación.
+
+	![Obteniendo token con login](/practica03/images/tokenLogin.png)
+
+	Se protege entonces los endpoints del controlador de películas con la nueva anotación:
+
+	```typescript
+	@UseGuards(JwtAuthGuard)
+	```
+
+	Con **_ThunderClient_**	hacemos las peticiones y validamos que funcione correctamente.
+
+	- CREATE FILM:
+
+	![Create film](/practica03/images/createFilm.png)
+
+	- UPDATE FILM:
+
+	![Update Film](/practica03/images/updateFilm.png)
+
+	- DELETE FILM:
+
+	![Delete Film](/practica03/images/deleteFilm.png)
+
+	- UPDATE NAME FILM:
+
+	![Update Name Film](/practica03/images/updateNameFilm.png)
