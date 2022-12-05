@@ -15,5 +15,5 @@ ___
 
 * [**Práctica 1** - Configuración de entorno y red](./practica01/)
 * [**Práctica 2** - Creando un servidor REST](./practica02/)
-* Práctica 3 - Seguridad y calidad (rama *hexagonal*)
-* Práctica 4 - Desplegando en la nube (rama *despliegue*)
+* Práctica 3 - Seguridad y calidad (rama *'hexagonal'*)
+* Práctica 4 - Desplegando en la nube (rama *'despliegue'*)
