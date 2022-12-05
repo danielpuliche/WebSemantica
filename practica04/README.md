@@ -24,4 +24,66 @@ A continuación se presentan los pasos realizados durante el desarrollo de la pr
 
   ![Inicio de sesión](/practica04/images/detaLogin.png)
 
+  Creamos el archivo `src/index.ts`.
+
+  ```typescript
+  import { NestFactory } from '@nestjs/core';
+  import { ExpressAdapter } from '@nestjs/platform-express';
+  import { AppModule } from './app.module';
+
+  const createNestServer = async (expressInstance) => {
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(expressInstance),
+  );
+
+  return app.init();
+  };
+
+  export default createNestServer;
+  ```
+
+  Se crea en la raiz del proyecto el archivo `index.js`.
+
+  ```ts
+  const express = require('express');
+  const createServer = require('./dist/index').default;
+
+  const app = express();
+  let nest;
+
+  app.use(async (req, res) => {
+  if (!nest) {
+    nest = express();
+    await createServer(nest);
+  }
+  return nest(req, res);
+  });
+
+  module.exports = app;
+  ```
+
+  Compilamos el pryecto antes de publicarlo.
+
+    cd ~/Documents/Universidad/WebSemantica/practica03/Servidores/films-project 
+    nest build
+
+  Publicamos la aplicación con deta
+
+    deta new --node
   
+  ![Deta New](/practica04/images/detaNew.png)
+
+  Hacemos deploy del proyecto.
+
+    deta deploy
+  
+  Activamos los logs de la aplicación.
+
+    deta visor enable
+
+  Desde la plataforma (*https://web.deta.sh/home/danielpuliche/default/micros/films-project*) obtenemos la url del servicio, que para este caso es: *https://fy4jvl.deta.dev/*.
+
+  Si realizamos la petición GET al servicio obtenemos su respuesta.
+
+  ![Petición GET](/practica04/images/getRequest.png)
