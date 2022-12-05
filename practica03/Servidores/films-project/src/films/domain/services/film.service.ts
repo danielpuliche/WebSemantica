@@ -1,45 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { Film } from '../models/film.model';
+import { FilmEntity } from '../entities/film.entity';
+import { InjectRepository} from '@nestjs/typeorm';
+import { MongoRepository, InsertResult, UpdateResult} from 'typeorm';
 
 @Injectable()
 export class FilmService {
-
-  // A falta de base de datos se emplea variable en memoria
-  private films: Film[] = [
-    {
-      name: "Titanic",
-      genre: "Epic romance - Disaster",
-      runningTime: 195,
-      releaseYear: 1997
-    }
-  ]
+constructor(
+  @InjectRepository(FilmEntity)
+  private repository: MongoRepository<FilmEntity>
+) {}
 
   // Método para obtener la lista de películas
-  list(): Film[] {
-    return this.films;
+  public async list(): Promise<FilmEntity[]> {
+    return await this.repository.find();
   }
 
   // Método para crear una película
-  create(film: Film): Film {
-    this.films.push(film)
-    return film
+  public async create(film: FilmEntity): Promise<InsertResult> {
+    const newFilm = await this.repository.insert(film);
+    return newFilm;
   }
 
   // Método para actualizar la película con el id dado
-  update(film: Film, id: number): Boolean {    
-    return (this.films[id] = film)? true : false
+  public async update(film: FilmEntity, id: number): Promise<UpdateResult> {    
+    const updatedFilm = await this.repository.update(id, film);
+    return updatedFilm
   }
 
   // Método para eliminar la película con el id dado
-  delete(id: number): Boolean {
-    const lenFilms = this.films.length
-
-    this.films = this.films.filter((val, index) => index != id)
-    return (lenFilms == this.films.length? false: true)
+  public async delete(id: number): Promise<Boolean> {
+    const deleResult = await this.repository.delete(id)
+    return deleResult.affected > 0;
   }
 
   // Método para actualizar el nombre de la película con el id dado
-  updateName(name: String, id: number): Boolean {
-    return (this.films[id].name = name)? true : false
+  public async updateName(name: String, id: number): Promise<UpdateResult>{
+    const updatedFilm = await this.repository.update(id, {name: name});
+    return updatedFilm;
   }
 }

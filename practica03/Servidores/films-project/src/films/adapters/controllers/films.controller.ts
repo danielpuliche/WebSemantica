@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Patch, UseGuards} from '@nestjs/common';
 import { FilmService} from '../../domain/services/film.service';
 
-import { Film } from '../../domain/models/film.model';
+import { FilmEntity } from 'src/films/domain/entities/film.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
@@ -28,7 +28,7 @@ constructor(private readonly filmService: FilmService) { }
 
     @UseGuards(JwtAuthGuard)
     @Post("create")
-    createFilm(@Body() film: Film){
+    createFilm(@Body() film: FilmEntity){
         try{
             return (this.filmService.create(film) ? "Película creada exitosamente" : "No se pudo agregar la película")
         }catch(e){
@@ -38,7 +38,7 @@ constructor(private readonly filmService: FilmService) { }
 
     @UseGuards(JwtAuthGuard)
     @Put("update/:id")
-    updateFilm(@Body() film: Film, @Param('id') id: number){
+    updateFilm(@Body() film: FilmEntity, @Param('id') id: number){
         try{
             return (this.filmService.update(film, id) ? "Película editada exitosamente" : "No se pudo actualizar la película")
         }catch(e){
